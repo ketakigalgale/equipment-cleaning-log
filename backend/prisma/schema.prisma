@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EquipmentStatus {
+  ACTIVE
+  RETIRED
+}
+
+enum CleaningStatus {
+  PENDING
+  VERIFIED
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+}
+
+model Equipment {
+  id              String           @id @default(uuid())
+  name            String
+  code            String           @unique
+  status          EquipmentStatus  @default(ACTIVE)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  cleaningRecords CleaningRecord[]
+
+  @@map("equipment")
+}
+
+model CleaningRecord {
+  id          String         @id @default(uuid())
+  equipmentId String
+  equipment   Equipment      @relation(fields: [equipmentId], references: [id])
+  cleanedBy   String
+  cleanedAt   DateTime
+  method      String
+  notes       String?
+  status      CleaningStatus @default(PENDING)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  auditLogs   AuditLog[]
+
+  @@index([equipmentId])
+  @@index([status])
+  @@map("cleaning_records")
+}
+
+// One row per changed field per create/update event, so the audit endpoint
+// can render a flat "field: old -> new" history without re-deriving diffs.
+model AuditLog {
+  id               String         @id @default(uuid())
+  cleaningRecordId String
+  cleaningRecord   CleaningRecord @relation(fields: [cleaningRecordId], references: [id])
+  action           AuditAction
+  changedBy        String
+  changedAt        DateTime       @default(now())
+  field            String
+  oldValue         String?
+  newValue         String?
+
+  @@index([cleaningRecordId, changedAt])
+  @@map("audit_logs")
+}
