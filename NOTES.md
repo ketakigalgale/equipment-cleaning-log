@@ -61,6 +61,17 @@ screens, deep-linkable URLs).
 It's the SQL Prisma would generate for this schema; `prisma migrate deploy` applies it
 as-is. If asked to explain any line of it, I can.
 
+## How this was actually run and verified
+
+This project was built and tested end-to-end against a free hosted Postgres instance
+(Supabase), not a local install or Docker - the dev machine used to build this didn't
+have Docker or PostgreSQL installed. `docker-compose.yml` and both `Dockerfile`s are
+included and reasoned through carefully (in particular, making sure `prisma generate`
+doesn't require `DATABASE_URL` at image-build time, only at container-run time), but
+`docker compose up` itself was not personally run for this submission. Everything else -
+migrations, seeding, the API, the front-end, and all tests - was run and confirmed
+working against the real hosted database.
+
 ## Assumptions (per the "note it and keep going" instruction)
 
 - `cleanedBy` is free text, not a foreign key to a user table - there's no user/auth model

@@ -13,9 +13,43 @@ audit trail: PostgreSQL + Node/TypeScript/Express API + React/TypeScript front-e
 ## Prerequisites
 
 - Node.js 20+ and npm
-- A PostgreSQL instance (local install, or via Docker - see below)
+- A PostgreSQL instance - any of the following work: a free hosted instance (Supabase,
+  Neon), a local install, or Docker. This project was built and verified end-to-end
+  against a free Supabase Postgres instance (see Option A below).
 
-## Option A: Run everything with Docker Compose (recommended, one command)
+## Option A: Run against a hosted Postgres (Supabase or Neon) - no local DB install
+
+This is the path actually used to build and test this project.
+
+1. Create a free project at [supabase.com](https://supabase.com) (or [neon.tech](https://neon.tech)).
+2. Get the connection string. On Supabase: click **Connect** on the project dashboard,
+   choose **URI** format, and pick the **Session pooler** option (not "Direct connection")
+   - Supabase's direct connection host requires IPv6, which most home/office networks
+     don't have; the session pooler works over IPv4. It looks like:
+   ```
+   postgresql://postgres.<project-ref>:<password>@aws-0-<region>.pooler.supabase.com:5432/postgres
+   ```
+3. If your database password contains special characters (`@`, `#`, etc.), URL-encode
+   them - e.g. a literal `@` in the password must become `%40`, or the connection string
+   won't parse correctly.
+4. Set up and run the API:
+   ```bash
+   cd backend
+   cp .env.example .env   # then paste your real connection string into DATABASE_URL
+   npm install
+   npm run prisma:migrate:deploy   # applies the committed migration to your DB
+   npm run prisma:seed             # loads sample equipment + cleaning records
+   npm run dev                     # starts the API on http://localhost:4000
+   ```
+5. In a second terminal, run the front-end:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev                     # starts the web app on http://localhost:5173
+   ```
+6. Open http://localhost:5173.
+
+## Option B: Run everything with Docker Compose (one command, untested against a real Docker install for this submission - see NOTES.md)
 
 ```bash
 docker compose up --build
@@ -34,7 +68,7 @@ automatically. To seed sample data after the stack is up:
 docker compose exec api npm run prisma:seed
 ```
 
-## Option B: Run locally without Docker
+## Option C: Run locally without Docker, against a local Postgres install
 
 ### 1. Database
 
