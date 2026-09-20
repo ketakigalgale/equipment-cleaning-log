@@ -64,13 +64,13 @@ as-is. If asked to explain any line of it, I can.
 ## How this was actually run and verified
 
 This project was built and tested end-to-end against a free hosted Postgres instance
-(Supabase), not a local install or Docker - the dev machine used to build this didn't
-have Docker or PostgreSQL installed. `docker-compose.yml` and both `Dockerfile`s are
-included and reasoned through carefully (in particular, making sure `prisma generate`
-doesn't require `DATABASE_URL` at image-build time, only at container-run time), but
-`docker compose up` itself was not personally run for this submission. Everything else -
-migrations, seeding, the API, the front-end, and all tests - was run and confirmed
-working against the real hosted database.
+(Supabase), not a local install - the dev machine used to build this didn't have
+PostgreSQL installed. Migrations, seeding, the API, the front-end, and all tests were run
+and confirmed working against the real hosted database.
+
+Docker/docker-compose was deliberately left out (it's an optional stretch goal, and
+Docker wasn't installed on the dev machine either) rather than shipping an untested
+Dockerfile and compose file.
 
 ## Assumptions (per the "note it and keep going" instruction)
 

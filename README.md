@@ -13,9 +13,9 @@ audit trail: PostgreSQL + Node/TypeScript/Express API + React/TypeScript front-e
 ## Prerequisites
 
 - Node.js 20+ and npm
-- A PostgreSQL instance - any of the following work: a free hosted instance (Supabase,
-  Neon), a local install, or Docker. This project was built and verified end-to-end
-  against a free Supabase Postgres instance (see Option A below).
+- A PostgreSQL instance - a free hosted instance (Supabase, Neon) or a local install both
+  work. This project was built and verified end-to-end against a free Supabase Postgres
+  instance (see Option A below).
 
 ## Option A: Run against a hosted Postgres (Supabase or Neon) - no local DB install
 
@@ -49,26 +49,7 @@ This is the path actually used to build and test this project.
    ```
 6. Open http://localhost:5173.
 
-## Option B: Run everything with Docker Compose (one command, untested against a real Docker install for this submission - see NOTES.md)
-
-```bash
-docker compose up --build
-```
-
-This starts Postgres, runs migrations, and starts the API and the web app.
-
-- Web: http://localhost:5173
-- API: http://localhost:4000/api
-- Postgres: localhost:5432 (user/pass: `postgres`/`postgres`, db: `equipment_cleaning_log`)
-
-The API container runs `prisma migrate deploy` on startup, so the schema is created
-automatically. To seed sample data after the stack is up:
-
-```bash
-docker compose exec api npm run prisma:seed
-```
-
-## Option C: Run locally without Docker, against a local Postgres install
+## Option B: Run locally against a local Postgres install
 
 ### 1. Database
 
