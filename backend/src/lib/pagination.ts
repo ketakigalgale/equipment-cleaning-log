@@ -27,13 +27,6 @@ function toPositiveInt(value: unknown, fallback: number): number {
   }
   return n;
 }
-
-/**
- * Parses raw (string) query params into safe, bounded pagination inputs.
- * Anything malformed (non-numeric, negative, non-integer) silently falls
- * back to the default rather than erroring, since pagination params are
- * a UX convenience, not something worth 400-ing a list request over.
- */
 export function parsePaginationParams(query: { page?: unknown; limit?: unknown }): PaginationParams {
   const page = toPositiveInt(query.page, DEFAULT_PAGE);
   const limit = Math.min(toPositiveInt(query.limit, DEFAULT_LIMIT), MAX_LIMIT);

@@ -8,14 +8,6 @@ import {
   updateCleaningRecord,
 } from "../src/services/cleaningRecordService";
 
-/**
- * A minimal in-memory stand-in for PrismaClient, implementing only the
- * calls cleaningRecordService actually makes. This lets the service's
- * orchestration (equipment lookup, audit-log writing, pagination, filtering)
- * be tested without a real Postgres instance. $transaction just runs the
- * callback against the same fake client, since there's no real atomicity
- * concern to simulate here.
- */
 function createFakeDb() {
   let idCounter = 0;
   const nextId = (prefix: string) => `${prefix}-${++idCounter}`;
