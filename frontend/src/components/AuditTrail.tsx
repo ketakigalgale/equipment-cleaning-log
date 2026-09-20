@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import { api, ApiError } from "../api/client";
 import { AuditLogEntry } from "../types";
 
-/**
- * Pure rendering of an already-fetched audit history. Split out from
- * AuditTrail so it can be unit-tested without mocking the network.
- */
+
 export function AuditTrailTable({ entries }: { entries: AuditLogEntry[] }) {
   if (entries.length === 0) {
     return <p className="empty-state">No audit history yet.</p>;

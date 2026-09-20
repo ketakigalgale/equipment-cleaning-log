@@ -18,11 +18,6 @@ function readStoredActor(): string {
   }
 }
 
-/**
- * Stands in for real auth (see NOTES.md): whoever is typed in here is sent
- * as the X-Actor header and becomes the audit log's "changed by" for every
- * mutation this browser tab makes.
- */
 export function ActorProvider({ children }: { children: ReactNode }) {
   const [actor, setActorState] = useState<string>(readStoredActor);
 
@@ -32,7 +27,6 @@ export function ActorProvider({ children }: { children: ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEY, trimmed);
     } catch {
-      // localStorage may be unavailable (private browsing) - non-fatal.
     }
   };
 

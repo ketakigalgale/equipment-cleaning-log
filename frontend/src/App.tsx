@@ -16,8 +16,6 @@ function ActorBar() {
 
 function AppShell() {
   const [selected, setSelected] = useState<Equipment | null>(null);
-  // Bumped whenever the selected equipment is edited, so EquipmentListPage
-  // (which owns its own fetch) picks up the new name/code/status too.
   const [listVersion, setListVersion] = useState(0);
 
   return (
